@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 
 export const Contador = () => {
@@ -12,6 +12,13 @@ export const Contador = () => {
     const restar = () => {
         setNumero(numero - 1);
     }
+
+    // use efect
+    useEffect(() => {
+      // setNumero(10)
+      console.log('cambio el numero');
+    }, [numero])
+    
 
   return (
     <div>
