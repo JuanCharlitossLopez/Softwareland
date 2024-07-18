@@ -23,10 +23,9 @@ export const Colores = () => {
     
 
     return (
-    <div style={{backgroundColor: color, height:'200px', width:'100%'}}>
+    <div>
         <button onClick={cambiarColores}> Cambiar Color</button>
         <Button color='danger' onClick={cambiarColores}>Danger!</Button>
-        
     </div>
   )
 }

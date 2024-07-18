@@ -1,0 +1,21 @@
+
+.carousel-caption-custom {
+    color: green; 
+  }
+  
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: green; 
+  }
+  
+  .carousel-control-prev,
+  .carousel-control-next {  
+    color: green; 
+  }
+  .carousel-indicators-custom .active {
+    background-color: green; /* Cambia el color del indicador activo */
+  }
+  
+  .carousel-indicators-custom li {
+    background-color: lightgreen; /* Cambia el color de los indicadores */
+  }
