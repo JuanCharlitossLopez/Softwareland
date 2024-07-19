@@ -14,7 +14,7 @@ export const BotonToast = () => {
     <div>
       <Button onClick={mostrar}>Mostrar/Ocultar Toast</Button>
       {activo && (
-        <div className="p-3 bg-primary my-2 rounded">
+        <div className="p-3 bg-info my-2 rounded">
           <Toast>
             <ToastHeader>Reactstrap</ToastHeader>
             <ToastBody>
