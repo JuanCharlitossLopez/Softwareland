@@ -6,14 +6,15 @@ import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 import { Table, Button, Modal, ModalBody, ModalFooter } from "reactstrap";
 
 export const Tabla = ({ datos }) => {
-  const [modalData, setModalData] = useState(null);
+  // Estado del Componente
+  const [modalData, setModalData] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleButton = (props) => {
-    setModalData(props);
+  // Funcion
+  const handleButton = (imagen) => {
+    setModalData(imagen);
     setModalOpen(true);
   };
-
   const handleClose = () => {
     setModalOpen(false);
   };
@@ -37,7 +38,7 @@ export const Tabla = ({ datos }) => {
               <td>{row.text1}</td>
               <td>{row.text2}</td>
               <td>
-                <FontAwesomeIcon icon={faCoffee} />
+                <FontAwesomeIcon icon={faCoffee}/>
                 {/* <i class={row.icon}></i> */}
               </td>
               <td>
