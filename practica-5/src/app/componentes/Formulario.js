@@ -5,6 +5,7 @@ import {
   Button,
   Col,
   Form,
+  FormFeedback,
   FormGroup,
   Input,
   Label,
@@ -13,25 +14,35 @@ import {
   ModalFooter,
   ModalHeader,
 } from "reactstrap";
+import "./Styles_Form.css";
 
+// OBJ
 export const Formulario = () => {
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
-    age: 0,
+    age: 18,
     email: "",
     password: "",
-    gender: "",
+    gender: {
+      male: true,
+      female: false,
+    },
     role: "Ing. Sistemas",
-    options: "",
+    options: false, //falta
     notes: "",
-    registrationDate: new Date(),
+    registrationDate: "",
   });
 
+  /**
+   * Función para manejar los datos de un formulario.
+   * Recibe un objeto con los datos a actualizar y los combina con los datos existentes.
+   * @param {Object} data - Datos a actualizar en el formulario.
+   */
   const handleFormData = (data) => {
     setFormData({
-      ...formData,
-      ...data,
+      ...formData, // Conserva los datos existentes en el formulario.
+      ...data, // Agrega o actualiza los datos recibidos.
     });
   };
 
@@ -44,22 +55,78 @@ export const Formulario = () => {
     setFormData({
       name: "",
       lastName: "",
-      age: 0,
+      age: 18,
       email: "",
       password: "",
-      gender: "",
-      role: "",
-      options: [],
+      gender: {
+        male: true,
+        female: false,
+      },
+      role: "Ing. Sistemas",
+      options: false,
       notes: "",
-      registrationDate: new Date(),
+      registrationDate: "",
+    });
+    setError({
+      name: "",
+      lastName: "",
+      email: "",
+      age: "",
+      registrationDate: "",
+    });
+    setValid({
+      name: true,
+      lastName: false,
+      email: false,
+      age: false,
+      registrationDate: false,
     });
   };
   // Estado del modal
   const [modal, setModal] = useState(false);
 
+  // Validaciones
+  const [error, setError] = useState({
+    name: "",
+    lastName: "",
+    email: "",
+    age: "",
+    registrationDate: "",
+  });
+
+  // Agregar validacion ReactStrap
+  const [valid, setValid] = useState({
+    name: false,
+    lastName: false,
+    email: false,
+    age: false,
+    registrationDate: false,
+  });
+
+  //Funcion validar form
+  const validateName = (name) => {
+    const regex = /^[a-zA-Z ]+$/;
+    return regex.test(name);
+  };
+
+  const validateEmail = (email) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
+
+  const validateAge = (age) => {
+    return age > 0 && age <= 100;
+  };
+
+  const validateDate = (date) => {
+    const today = new Date();
+    const inputDate = new Date(date);
+    return inputDate >= today;
+  };
+
   return (
-    <div>
-      <Form>
+    <div className="contenedor_form">
+      <Form className="form">
         {/* Nombre */}
         <FormGroup>
           <Label for="name">Nombre:</Label>
@@ -68,12 +135,16 @@ export const Formulario = () => {
             name="name"
             placeholder="Ingresa tu nombre"
             type="text"
+            valid={validateName(formData.name)}
+            invalid={!validateName(formData.name)}
             onChange={(event) => {
-              console.log(event.target.value);
               handleFormData({ name: event.target.value });
             }}
             value={formData.name}
           />
+          {!validateName(formData.name) && (
+            <FormFeedback>Este campo solo acepta letras</FormFeedback>
+          )}
         </FormGroup>
         {/* Apellido */}
         <FormGroup>
@@ -83,12 +154,16 @@ export const Formulario = () => {
             name="lastName"
             placeholder="Ingresa tu apellido"
             type="text"
+            valid={validateName(formData.lastName)}
+            invalid={!validateName(formData.lastName)}
             onChange={(event) => {
-              console.log(event.target.value);
               handleFormData({ lastName: event.target.value });
             }}
             value={formData.lastName}
           />
+          {!validateName(formData.lastName) && (
+            <FormFeedback>Este campo solo acepta letras</FormFeedback>
+          )}
         </FormGroup>
         {/* Email */}
         <FormGroup>
@@ -98,12 +173,18 @@ export const Formulario = () => {
             name="email"
             placeholder="Ingresa tu correo"
             type="email"
+            valid={validateEmail(formData.email)}
+            invalid={!validateEmail(formData.email)}
             onChange={(event) => {
-              console.log(event.target.value);
               handleFormData({ email: event.target.value });
             }}
             value={formData.email}
           />
+          {!validateEmail(formData.email) && (
+            <FormFeedback>
+              Este campo debe tener formato de correo electrónico
+            </FormFeedback>
+          )}
         </FormGroup>
         {/* Contrasenia */}
         <FormGroup>
@@ -128,12 +209,20 @@ export const Formulario = () => {
             name="age"
             placeholder="0"
             type="number"
+            min="1"
+            max="100"
+            valid={validateAge(formData.age)}
+            invalid={!validateAge(formData.age)}
             onChange={(event) => {
-              console.log(event.target.value);
               handleFormData({ age: event.target.value });
             }}
             value={formData.age}
           />
+          {!validateAge(formData.age) && (
+            <FormFeedback>
+              Este campo solo acepta números positivos hasta 100
+            </FormFeedback>
+          )}
         </FormGroup>
         {/* Genero */}
         <FormGroup>
@@ -143,11 +232,12 @@ export const Formulario = () => {
               type="radio"
               name="gender"
               value="male"
-              checked={formData.gender === "male"}
-              onChange={(event) => {
-                console.log(event.target.value);
-                handleFormData({ gender: event.target.value });
-              }}
+              checked={formData.gender.male}
+              onChange={(event) =>
+                handleFormData({
+                  gender: { male: event.target.checked, female: false },
+                })
+              }
             />
             Masculino
             <br />
@@ -193,11 +283,17 @@ export const Formulario = () => {
         <FormGroup>
           <Label for="options">Opciones:</Label>
           <FormGroup>
-            <Input type="checkbox" name="options" />
+            <Input
+              type="checkbox"
+              name="options"
+              checked={formData.options}
+              onChange={(event) => {
+                console.log(event.target.value);
+                handleFormData({ options: event.target.checked });
+              }}
+            />
             Opcion 1
             <br />
-            <Input type="checkbox" name="options" />
-            Opcion 2
           </FormGroup>
         </FormGroup>
         {/* Notas */}
@@ -206,7 +302,7 @@ export const Formulario = () => {
           <Input
             id="notes"
             name="notes"
-            placeholder="0"
+            placeholder="Agrega tus notas"
             type="textarea"
             value={formData.notes}
             onChange={(event) => {
@@ -223,13 +319,18 @@ export const Formulario = () => {
             name="date"
             placeholder="0"
             type="date"
-            min={new Date().toISOString().split("T")[0]} // Seleccion Hoy en adelante
-            value={formData.registrationDate.toLocaleDateString("en-CA")} // Formato: yyyy-MM-dd
+            valid={validateDate(formData.registrationDate)}
+            invalid={!validateDate(formData.registrationDate)}
             onChange={(event) => {
-              const newDate = new Date(event.target.value);
-              handleFormData({ registrationDate: newDate });
+              handleFormData({ registrationDate: event.target.value });
             }}
+            value={formData.registrationDate}
           />
+          {!validateDate(formData.registrationDate) && (
+            <FormFeedback>
+              Este campo solo acepta fechas a partir del día en curso
+            </FormFeedback>
+          )}
         </FormGroup>
         {/* Boton */}
         <Button color="primary" onClick={handleSubmit}>
@@ -251,13 +352,23 @@ export const Formulario = () => {
           <p>Correo: {formData.email}</p>
           <p>Contraseña: {formData.password}</p>
           <p>Edad: {formData.age}</p>
-          <p>Género: {formData.gender}</p>
+          <p>
+            Género:{" "}
+            {formData.gender.male
+              ? "Masculino"
+              : formData.gender.female
+              ? "Femenino"
+              : "No especificado"}
+          </p>
           <p>Rol: {formData.role}</p>
-          <p>Opciones:</p>
+          <p>
+            Opcion:
+            {formData.options ? " Sí" : " No"}
+          </p>
           <p>Notas: {formData.notes}</p>
           <p>
             Fecha de registro:
-            {formData.registrationDate.toLocaleDateString()}
+            {formData.registrationDate.split("-").reverse().join("/")}
           </p>
         </ModalBody>
         <ModalFooter>
