@@ -35,7 +35,7 @@ export const Formulario = () => {
     });
   };
 
-  // Mostrar modal
+  // Mostrar form en modal
   const handleSubmit = () => {
     setModal(true);
   };
