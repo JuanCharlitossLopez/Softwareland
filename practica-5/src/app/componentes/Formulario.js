@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Table,
 } from "reactstrap";
 import "./Styles_Form.css";
 
@@ -29,80 +30,80 @@ export const Formulario = () => {
       female: false,
     },
     role: "Ing. Sistemas",
-    options: false, //falta
+    options: false, 
     notes: "",
     registrationDate: "",
   });
 
-  /**
-   * Función para manejar los datos de un formulario.
-   * Recibe un objeto con los datos a actualizar y los combina con los datos existentes.
-   * @param {Object} data - Datos a actualizar en el formulario.
-   */
+
+
+  const [tableData, setTableData] = useState([]);
+  const [editing, setEditing] = useState(null);
+
   const handleFormData = (data) => {
-    setFormData({
-      ...formData, // Conserva los datos existentes en el formulario.
-      ...data, // Agrega o actualiza los datos recibidos.
-    });
+    setFormData({ ...formData, ...data });
   };
 
-  // Mostrar form en modal
   const handleSubmit = () => {
-    setModal(true);
-  };
-  //   Reiniciar
-  const handleReset = () => {
+    setTableData([...tableData, formData]);
     setFormData({
       name: "",
       lastName: "",
-      age: 18,
+      age: 0,
       email: "",
       password: "",
       gender: {
         male: true,
         female: false,
       },
-      role: "Ing. Sistemas",
+      role: "",
       options: false,
       notes: "",
       registrationDate: "",
     });
-    setError({
+  };
+
+  const handleReset = () => {
+    setFormData({
       name: "",
       lastName: "",
+      age: 0,
       email: "",
-      age: "",
+      password: "",
+      gender: {
+        male: true,
+        female: false,
+      },
+      role: "",
+      options: false,
+      notes: "",
       registrationDate: "",
     });
-    setValid({
-      name: true,
-      lastName: false,
-      email: false,
-      age: false,
-      registrationDate: false,
-    });
+    setTableData([]);
+  };
+
+  const handleEdit = (index) => {
+    setEditing(index);
+  };
+
+  const handleSave = (index) => {
+    const newData = [...tableData];
+    newData[index] = formData;
+    setTableData(newData);
+    setEditing(null);
+  };
+
+  const handleDelete = (index) => {
+    const newData = [...tableData];
+    newData.splice(index, 1);
+    setTableData(newData);
   };
   // Estado del modal
   const [modal, setModal] = useState(false);
 
-  // Validaciones
-  const [error, setError] = useState({
-    name: "",
-    lastName: "",
-    email: "",
-    age: "",
-    registrationDate: "",
-  });
+  
 
-  // Agregar validacion ReactStrap
-  const [valid, setValid] = useState({
-    name: false,
-    lastName: false,
-    email: false,
-    age: false,
-    registrationDate: false,
-  });
-
+  
   //Funcion validar form
   const validateName = (name) => {
     const regex = /^[a-zA-Z ]+$/;
@@ -334,7 +335,7 @@ export const Formulario = () => {
         </FormGroup>
         {/* Boton */}
         <Button color="primary" onClick={handleSubmit}>
-          Mostrar
+          Agregar
         </Button>
         <Button color="secondary" onClick={handleReset}>
           Reiniciar
@@ -377,6 +378,49 @@ export const Formulario = () => {
           </Button>
         </ModalFooter>
       </Modal>
+
+      {/* TABLA */}
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Edad</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Nota</th>
+            <th>Fecha de registro</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.map((data, index) => (
+            <tr key={index}>
+              <td>{data.name}</td>
+              <td>{data.lastName}</td>
+              <td>{data.age}</td>
+              <td>{data.email}</td>
+              <td>{data.role}</td>
+              <td>{data.notes}</td>
+              <td>{data.registrationDate}</td>
+              <td>
+                {editing === index ? (
+                  <Button color="primary" onClick={() => handleSave(index)}>
+                    Guardar
+                  </Button>
+                ) : (
+                  <Button color="primary" onClick={() => handleEdit(index)}>
+                    Editar
+                  </Button>
+                )}
+                <Button color="danger" onClick={() => handleDelete(index)}>
+                  Eliminar
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
 };
