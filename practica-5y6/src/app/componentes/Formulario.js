@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Table,
 } from "reactstrap";
 import "./Styles_Form.css";
 import { useForm } from "react-hook-form";
@@ -17,22 +18,67 @@ export const Formulario = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }, //obj que te indica donde hay errores en los inputs
+    reset,
   } = useForm();
-  
-  const [modal, setModal] = useState(false);
-  const [datos, setDatos] = useState({});
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    console.log("Formulario Enviado");
-    setModal(true);
-    setDatos(data);
-  });
+  const [modal, setModal] = useState(false);
+
+  const [datos, setDatos] = useState([]);
 
   const toggle = () => setModal(!modal);
 
   const fechaActual = new Date().toISOString().split("T")[0];
+
+  const onSubmit = handleSubmit((data) => {
+    // console.log(data);
+    // console.log("Formulario Enviado");
+    setModal(true);
+    setDatos(data);
+  });
+  const resetForm = () => {
+    reset();
+    setDatos({});
+    // console.log(datos);
+  };
+
+  //tabla
+  const [datosTabla, setDatosTabla] = useState([]);
+  const guardarDatos = () => {
+    const nuevoDato = {
+      name: datos.name,
+      lastName: datos.lastName,
+      email: datos.email,
+      password: datos.password,
+      age: datos.age,
+      gender: datos.gender,
+      rol: datos.rol,
+      terms: datos.terms,
+      notes: datos.notes,
+      registerDate: datos.registerDate,
+    };
+    setDatosTabla([...datosTabla, nuevoDato]);
+    setModal(false);
+    reset(); //reiniciar campos del form
+    setDatos({});
+  };
+
+  const [modalEliminar, setModalEliminar] = useState(false);
+  const [indiceEliminar, setIndiceEliminar] = useState(null);
+
+  const eliminarDato = (index) => {
+    setModalEliminar(true);
+    setIndiceEliminar(index);
+  };
+
+  const confirmarEliminar = () => {
+    setDatosTabla(datosTabla.filter((dato, i) => i !== indiceEliminar));
+    setModalEliminar(false);
+  };
+
+  const cancelarEliminar = () => {
+    setModalEliminar(false);
+  };
 
   return (
     <div className="contenedor_form">
@@ -214,7 +260,10 @@ export const Formulario = () => {
         <Button type="submit" color="primary">
           Mostrar
         </Button>
-        <Button color="warning">Reiniciar</Button>
+        <Button color="secondary" onClick={resetForm}>
+          Reiniciar
+        </Button>
+        <Button color="warning">Guardar</Button>
       </Form>
 
       {/* Modal */}
@@ -237,8 +286,72 @@ export const Formulario = () => {
           </p>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={toggle}>
+          <Button color="" onClick={toggle}>
             Cerrar
+          </Button>
+          <Button color="warning" onClick={guardarDatos}>
+            Guardar
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      {/* Tabla de registros*/}
+      <Table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Contraseña</th>
+            <th>Edad</th>
+            <th>Genero</th>
+            <th>Rol</th>
+            <th>Terminos</th>
+            <th>Notas</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.isArray(datosTabla) ? (
+            datosTabla.map((form, index) => (
+              <tr key={index}>
+                <td>{form.name}</td>
+                <td>{form.lastName}</td>
+                <td>{form.email}</td>
+                <td>{form.password}</td>
+                <td>{form.age}</td>
+                <td>{form.gender}</td>
+                <td>{form.rol}</td>
+                <td>{form.terms ? "Aceptado" : "No aceptado"}</td>
+                <td>{form.notes}</td>
+                <td>
+                  <Button color="warning">Edit</Button>
+                  <Button color="danger" onClick={() => eliminarDato(index)}>
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td>No hay datos</td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+
+      {/* Modal de Confirmar Eliminar */}
+      <Modal isOpen={modalEliminar} toggle={cancelarEliminar}>
+        <ModalHeader toggle={cancelarEliminar}>
+          Confirmar eliminación
+        </ModalHeader>
+        <ModalBody>¿Estás seguro de que deseas eliminar este dato?</ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={confirmarEliminar}>
+            Sí, eliminar
+          </Button>
+          <Button color="secondary" onClick={cancelarEliminar}>
+            No, cancelar
           </Button>
         </ModalFooter>
       </Modal>
