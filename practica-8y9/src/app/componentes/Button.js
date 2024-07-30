@@ -9,13 +9,20 @@ import {
   CardHeader,
   CardText,
   CardTitle,
+  Table,
 } from "reactstrap";
 
 export const Consulta = () => {
   // ``
   const size = 100;
+  const type = 'beers';
+  const sizeBeers = 15;
+
   const url = `https://random-data-api.com/api/v2/users?size=${size}`;
+  const urlBeers = `https://random-data-api.com/api/v2/${type}?size=${sizeBeers}`;
+
   const [data, setData] = useState(null);
+  const [dataBeers, setDataBeers] = useState(null);
 
   const consultarApi = () => {
     fetch(url)
@@ -24,11 +31,29 @@ export const Consulta = () => {
       .catch((error) => console.error(error));
   };
 
+
+  useEffect(() => {
+    fetch(urlBeers)
+    .then((response) => response.json())
+    .then((dataBeers) => setDataBeers(dataBeers))
+    .catch((error) => console.error(error));
+    }, []);
+
+  const updateTable = () => {
+    fetch(urlBeers)
+    .then((response) => response.json())
+    .then((dataBeers) => setDataBeers(dataBeers))
+    .catch((error) => console.error(error));
+  }
+
   return (
     <div>
       <h1>Practica - 8</h1>
       <Button color="primary" onClick={consultarApi}>
         Hacer consulta
+      </Button>
+      <Button color="primary" onClick={updateTable}>
+        Actualizar Tabla
       </Button>
 
       {/* 
@@ -40,9 +65,40 @@ export const Consulta = () => {
       <div>
         {/* Informacion: {data && <pre>{JSON.stringify(data, null, 2)}</pre>} */}
       </div>
-
+      <div>
+        {/* Informacion Beers: {dataBeers && <pre>{JSON.stringify(dataBeers, null, 2)}</pre>} */}
+      </div>
       <hr />
-
+      <Table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>brand</th>
+            <th>name</th>
+            <th>style</th>
+            <th>hop</th>
+            <th>yeast</th>
+            <th>ibu</th>
+            <th>alcohol</th>
+            <th>blg</th>
+          </tr>
+        </thead>
+        <tbody>
+          {dataBeers && dataBeers.map((beer) => (
+            <tr key={beer.id}>
+              <td>{beer.id}</td>
+              <td>{beer.brand}</td>
+              <td>{beer.name}</td>
+              <td>{beer.style}</td>
+              <td>{beer.hop}</td>
+              <td>{beer.yeast}</td>
+              <td>{beer.ibu}</td>
+              <td>{beer.alcohol}</td>
+              <td>{beer.blg}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
       <div className="d-flex flex-wrap">
         {data &&
           data.map((user) => (
@@ -90,6 +146,8 @@ export const Consulta = () => {
             </Card>
           ))}
       </div>
+
+
     </div>
   );
 };
