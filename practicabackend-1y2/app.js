@@ -54,13 +54,13 @@ app.delete("/users/:id", (req, res) => {
   } else {
     users.splice(index, 1);
     fs.writeFileSync("./data/users.json", JSON.stringify(users));
-    res.status(204).json({ message: "User deleted" });
+    res.status(200).json({ message: "User deleted" });
   }
 });
 
 // PUT users
 app.put("/users/:id", (req, res) => {
-  const id = req.params.id;
+  const id = parseInt(req.params.id);// Ahora es un entero
   const index = users.findIndex((user) => user.id === parseInt(id));
   if (index === -1) {
     res.status(404).json({ message: "User not found" });
