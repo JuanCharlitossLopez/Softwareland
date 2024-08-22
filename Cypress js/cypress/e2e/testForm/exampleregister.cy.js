@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 function fillAndSubmitForm() {
-  cy.visit("http://localhost:3000/", { failOnStatusCode: false });
+  // cy.visit("http://localhost:3000/", { failOnStatusCode: false });
   cy.get('[name="name"]').type("Juan");
   cy.get('[name="lastName"]').type("Garcia");
   cy.get('[type="email"]').type("juan.garcia@example.com");
@@ -121,10 +121,11 @@ function deleteUser() {
 }
 
 describe("My loading page", () => {
-  it("Load page", () => {
+
+  beforeEach(() => {
     cy.viewport("macbook-16");
     cy.visit("http://localhost:3000/", { failOnStatusCode: false });
-  });
+  })
 
   it("Fill and submit form", () => {
     fillAndSubmitForm();

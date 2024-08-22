@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Juan",
+    "lastName": "Garcia",
+    "email": "juan.garcia@example.com",
+    "password": "123456",
+    "age": 25,
+    "gender": "male",
+    "role": "user",
+    "terms": true,
+    "description": "Este es un texto de prueba",
+    "date": "2024-08-22"
+  },
+  {
+    "name": "Maria",
+    "lastName": "Rodriguez",
+    "email": "maria.rodriguez@example.com",
+    "password": "abcdef",
+    "age": 30,
+    "gender": "female",
+    "role": "admin",
+    "terms": true,
+    "description": "Este es otro texto de prueba",
+    "date": "2026-03-15"
+  },
+  {
+    "name": "Pedro",
+    "lastName": "Hernandez",
+    "email": "pedro.hernandez@example.com",
+    "password": "password123",
+    "age": 28,
+    "gender": "male",
+    "role": "user",
+    "terms": true,
+    "description": "Este es un texto de prueba más",
+    "date": "2025-11-01"
+  },
+  {
+    "name": "Ana",
+    "lastName": "Gomez",
+    "email": "ana.gomez@example.com",
+    "password": "ilovecoding",
+    "age": 22,
+    "gender": "female",
+    "role": "user",
+    "terms": true,
+    "description": "Este es un texto de prueba nuevo",
+    "date": "2025-02-20"
+  },
+  {
+    "name": "Luis",
+    "lastName": "Perez",
+    "email": "luis.perez@example.com",
+    "password": "qwerty",
+    "age": 35,
+    "gender": "male",
+    "role": "user",
+    "terms": true,
+    "description": "Este es un texto de prueba antiguo",
+    "date": "2025-06-12"
+  },
+  {
+    "name": "Sofia",
+    "lastName": "Martinez",
+    "email": "sofia.martinez@example.com",
+    "password": "sofia123",
+    "age": 29,
+    "gender": "female",
+    "role": "user",
+    "terms": true,
+    "description": "Este es un texto de prueba interesante",
+    "date": "2025-09-18"
+  },
+  {
+    "name": "Carlos",
+    "lastName": "Lopez",
+    "email": "carlos.lopez@example.com",
+    "password": "carlos123",
+    "age": 32,
+    "gender": "male",
+    "role": "admin",
+    "terms": true,
+    "description": "Este es un texto de prueba administrativo",
+    "date": "2025-05-15"
+  },
+  {
+    "name": "Isabel",
+    "lastName": "Gonzalez",
+    "email": "isabel.gonzalez@example.com",
+    "password": "isabel123",
+    "age": 26,
+    "gender": "female",
+    "role": "user",
+    "terms": true,
+    "description": "Este es un texto de prueba moderador",
+    "date": "2025-01-10"
+  }
+]
